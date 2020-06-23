@@ -1,7 +1,9 @@
 const express = require('express');
-const router = express.Router();
 const db = require('../config/database');
+const sha256 = require('js-sha256');
+const router = express.Router();
 const User = require('../models/User');
+const Token = require('../models/Token');
 
 router.get('/', (req, res) => {
   User.findAll().
@@ -30,9 +32,13 @@ router.post('/add', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  req.body.token = "asda";
-  console.log(req.body);
-  //Token.create(req.body);
+  var token = sha256("" + req.body.user_id + req.body.expired_at),
+      currentDate = new Date(),
+      date = currentDate.setDate(currentDate.getDate() + 1);
+  req.body.expired_at = date;
+  req.body.token = token;
+  Token.create(req.body);
+  res.send({status: "logged"});
 });
 
 module.exports = router;
