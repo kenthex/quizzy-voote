@@ -18,6 +18,8 @@ import com.example.quizzyvoote.classes.Storage;
 import com.example.quizzyvoote.classes.api_NetworkService;
 import com.example.quizzyvoote.classes.api_Tokens;
 
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,8 +56,10 @@ public class MainActivity extends AppCompatActivity {
         Storage.init(MainActivity.this);
         String token = Storage.getProperty("TOKEN");
 
-        if(token != null) {
-            //Toast.makeText(MainActivity.this, "TOKEN: " + token, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this, "TOKEN: " + token, Toast.LENGTH_SHORT).show();
+
+        if(token != "" && token != null) {
+
             api_NetworkService.getInstance()
                     .getJSONApi()
                     .getToken(token)
@@ -64,46 +68,80 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(@NonNull Call<api_Tokens> call, @NonNull Response<api_Tokens> response) {
                             api_Tokens post = response.body();
 
-                            long createdAt = post.getCreatedAt();
+                            long currentDate = new Date().getTime();
                             long expiredAt = post.getExpiredAt();
 
-                            if(expiredAt > createdAt) {
-                                /// OK
-                            } else {
-
-                            }
-
                             Storage.addProperty("TOKEN", post.getToken());
+                            //
+                            if(expiredAt > currentDate) {
 
-                            api_NetworkService.getInstance()
-                                    .getJSONApi()
-                                    .delToken(post.getToken())
-                                    .enqueue(new Callback<api_Tokens>() {
-                                        @Override
-                                        public void onResponse(@NonNull Call<api_Tokens> call, @NonNull Response<api_Tokens> response) {
-                                            api_Tokens post = response.body();
-                                        }
-                                        @Override
-                                        public void onFailure(@NonNull Call<api_Tokens> call, @NonNull Throwable t) {
-                                            Log.d("RES", "ERROR");
-                                            t.printStackTrace();
-                                        }
-                                    });
+                                //Toast.makeText(MainActivity.this, "TOKEN OK: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
+                                /// УДАЛЯЕМ ТОКЕН
+                                api_NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .delToken(post.getToken())
+                                        .enqueue(new Callback<api_Tokens>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<api_Tokens> call, @NonNull Response<api_Tokens> response) {
+                                                api_Tokens post = response.body();
+                                            }
+                                            @Override
+                                            public void onFailure(@NonNull Call<api_Tokens> call, @NonNull Throwable t) {
+                                                Log.d("RES", "ERROR_1");
+                                                t.printStackTrace();
+                                            }
+                                        });
+//                                /// СОЗДАЕМ НОВЫЙ
+                                /// ЛОГИНИМ
+                                api_Tokens token = new api_Tokens(post.getUserID(), "", new Date().getTime());
+                                api_NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .authUser(token)
+                                        .enqueue(new Callback<api_Tokens>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<api_Tokens> call, @NonNull Response<api_Tokens> response) {
+                                                api_Tokens post = response.body();
 
+                                                Storage.init(MainActivity.this);
+                                                Storage.addProperty("TOKEN", post.getToken());
+                                                Storage.addProperty("USER_ID", post.getUserID().toString());
+                                                Toast.makeText(MainActivity.this, "TOKEN OK: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
+                                                 Intent intent = new Intent(MainActivity.this, MainActionActivity.class);
+                                                 startActivity(intent);
+                                            }
+                                            @Override
+                                            public void onFailure(@NonNull Call<api_Tokens> call, @NonNull Throwable t) {
+                                                Log.d("RES", "ERROR");
+                                                t.printStackTrace();
+                                            }
+                                        });
 
-//                          Intent intent = new Intent(SigninActivity.this, MainActionActivity.class);
-//                          startActivity(intent);
-                            Toast.makeText(MainActivity.this, "TOKEN: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
+                            } else {
+                                /// ВРЕМЯ ТОКЕНА ВЫШЛО, УДАЛЯЕМ
+                                Toast.makeText(MainActivity.this, "TOKEN EXPIRED: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
+                                api_NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .delToken(post.getToken())
+                                        .enqueue(new Callback<api_Tokens>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<api_Tokens> call, @NonNull Response<api_Tokens> response) {
+                                                api_Tokens post = response.body();
+                                                Storage.addProperty("TOKEN", null);
+                                            }
+                                            @Override
+                                            public void onFailure(@NonNull Call<api_Tokens> call, @NonNull Throwable t) {
+                                                Log.d("RES", "ERROR_2");
+                                                t.printStackTrace();
+                                            }
+                                        });
+                            }
                         }
-
                         @Override
                         public void onFailure(@NonNull Call<api_Tokens> call, @NonNull Throwable t) {
-                            Log.d("RES", "ERROR");
+                            Log.d("RES", "ERROR_3");
                             t.printStackTrace();
                         }
                     });
-
-
         } else { Toast.makeText(MainActivity.this, "NO TOKEN", Toast.LENGTH_SHORT).show(); }
 
     }

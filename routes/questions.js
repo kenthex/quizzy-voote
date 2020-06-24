@@ -9,10 +9,11 @@ router.get('/', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-  //console.log(req.body);
   Questions.create(req.body).
-  then(question => res.send(question.dataValues.id)).
-  catch(err => res.send({error: err.errors[0].message}));
+    then(question =>
+      res.send(/*{ id: question.dataValues.id }*/ question.dataValues)).
+    catch(err =>
+      res.send({ error: err.errors[0].message }));
 });
 
 

@@ -17,7 +17,6 @@ const Answer = db.define('answers', {
 
   title: {
     type: Sequelize.STRING(),
-    unique: true,
     allowNull: false
   },
 

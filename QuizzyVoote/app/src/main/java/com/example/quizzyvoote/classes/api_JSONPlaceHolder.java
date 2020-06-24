@@ -33,7 +33,13 @@ public interface api_JSONPlaceHolder {
     @DELETE("/tokens/{token}")
     public Call<api_Tokens> delToken(@Path("token") String token);
 
+    /// QUESTIONS
+    @POST("/questions/add")
+    public Call<api_Questions> createQuestion(@Body api_Questions data);
 
+    /// ANSWERS
+    @POST("/answers/add")
+    public Call<api_Answers> createAnswers(@Body api_Answers data);
 
 }
 

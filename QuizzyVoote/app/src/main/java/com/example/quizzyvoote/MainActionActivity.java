@@ -2,15 +2,25 @@ package com.example.quizzyvoote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.quizzyvoote.classes.Storage;
+import com.example.quizzyvoote.classes.api_NetworkService;
+import com.example.quizzyvoote.classes.api_Tokens;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActionActivity extends AppCompatActivity {
 
-    Button btn_create_quiz, btn_pass_quiz;
+    Button btn_create_quiz, btn_pass_quiz, btn_exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,31 @@ public class MainActionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActionActivity.this, ShowQuizzesActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btn_exit = (Button) findViewById(R.id.btn_exit);
+        btn_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                api_NetworkService.getInstance()
+                        .getJSONApi()
+                        .delToken(Storage.getProperty("TOKEN"))
+                        .enqueue(new Callback<api_Tokens>() {
+                            @Override
+                            public void onResponse(@NonNull Call<api_Tokens> call, @NonNull Response<api_Tokens> response) {
+                                api_Tokens post = response.body();
+                                Storage.addProperty("USER_ID", "");
+                                Storage.addProperty("TOKEN", "");
+                                Intent intent = new Intent(MainActionActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onFailure(@NonNull Call<api_Tokens> call, @NonNull Throwable t) {
+                                Log.d("RES", "ERROR_1");
+                                t.printStackTrace();
+                            }
+                        });
             }
         });
     }

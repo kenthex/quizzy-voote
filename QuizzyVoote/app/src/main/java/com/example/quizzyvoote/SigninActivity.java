@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quizzyvoote.classes.Storage;
 import com.example.quizzyvoote.classes.api_NetworkService;
+import com.example.quizzyvoote.classes.api_Questions;
 import com.example.quizzyvoote.classes.api_Tokens;
 import com.example.quizzyvoote.classes.api_Users;
 
@@ -55,7 +56,6 @@ public class SigninActivity extends AppCompatActivity {
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(userName.getText().toString().trim().length() != 0) {
                     if(userPassword.getText().toString().length() != 0) {
                         api_NetworkService.getInstance()
@@ -85,11 +85,10 @@ public class SigninActivity extends AppCompatActivity {
                                                                 Storage.init(SigninActivity.this);
                                                                 Storage.addProperty("TOKEN", post.getToken());
 
-//                                                Intent intent = new Intent(SigninActivity.this, MainActionActivity.class);
-//                                                startActivity(intent);
+                                                                Intent intent = new Intent(SigninActivity.this, MainActionActivity.class);
+                                                                startActivity(intent);
 
                                                             }
-
                                                             @Override
                                                             public void onFailure(@NonNull Call<api_Tokens> call, @NonNull Throwable t) {
                                                                 Log.d("RES", "ERROR");
@@ -98,10 +97,6 @@ public class SigninActivity extends AppCompatActivity {
                                                                 t.printStackTrace();
                                                             }
                                                         });
-
-//                                                Intent intent = new Intent(SigninActivity.this, MainActionActivity.class);
-//                                                startActivity(intent);
-                                                //Toast.makeText(SigninActivity.this, "DONE", Toast.LENGTH_SHORT).show();
                                             } else { userPassword.setError("Неверный пароль"); userPassword.requestFocus(); Toast.makeText(SigninActivity.this, "Введенный пароль: " + inputPass + "\nПароль с базы: " + post.getUser_password(), Toast.LENGTH_SHORT).show();}
                                         } else { userName.setError("Пользователь не найден"); userName.requestFocus(); }
 
@@ -110,8 +105,6 @@ public class SigninActivity extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Call<api_Users> call, @NonNull Throwable t) {
                                         Log.d("RES", "ERROR");
-                                        //Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
-                                        //textView.setText("Error occurred while getting request!");
                                         t.printStackTrace();
                                     }
                                 });

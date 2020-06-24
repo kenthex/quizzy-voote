@@ -4,20 +4,33 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.quizzyvoote.classes.Storage;
+import com.example.quizzyvoote.classes.api_Answers;
+import com.example.quizzyvoote.classes.api_NetworkService;
+import com.example.quizzyvoote.classes.api_Tokens;
+import com.example.quizzyvoote.classes.api_Questions;
 import com.example.quizzyvoote.classes.c_Question_Adapter;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class CreateQuizActivity extends AppCompatActivity {
@@ -54,9 +67,17 @@ public class CreateQuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(answerText.getText().toString().trim().length() != 0) {
-                    questions.add(answerText.getText().toString());
-                    questionAdapter.notifyItemInserted(questionAdapter.getItemCount());
-                    answerText.setText("");
+
+                        if(questions.contains(answerText.getText().toString())) {
+                            answerText.setError("Ответ уже существует");
+                            answerText.requestFocus();
+                            answerText.setText("");
+                        } else {
+                            questions.add(answerText.getText().toString());
+                            questionAdapter.notifyItemInserted(questionAdapter.getItemCount());
+                            answerText.setText("");
+                        }
+
                 } else Toast.makeText(CreateQuizActivity.this, "Пустое поле (Вариант ответа)", Toast.LENGTH_SHORT).show();
             }
         });
@@ -95,6 +116,46 @@ public class CreateQuizActivity extends AppCompatActivity {
                 if(quizNameLength != 0) {
                     if(answersCount != 0) {
                         /// Сохранение вопроса в бд
+                        final api_Questions question = new api_Questions(quizName.getText().toString(), 0, 0);
+                        api_NetworkService.getInstance()
+                                .getJSONApi()
+                                .createQuestion(question)
+                                .enqueue(new Callback<api_Questions>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<api_Questions> call, @NonNull Response<api_Questions> response) {
+                                        api_Questions post = response.body();
+                                        if(post.getError() != "" && post.getError() != null) {
+
+                                            if(post.getError().equals("title must be unique")) {
+                                                quizName.setError("Название занято");
+                                                quizName.requestFocus();
+                                            }
+                                            Toast.makeText(CreateQuizActivity.this, post.getError(), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            api_Answers answers = new api_Answers(Integer.parseInt(post.getID()), questions);
+                                            api_NetworkService.getInstance()
+                                                    .getJSONApi()
+                                                    .createAnswers(answers)
+                                                    .enqueue(new Callback<api_Answers>() {
+                                                        @Override
+                                                        public void onResponse(@NonNull Call<api_Answers> call, @NonNull Response<api_Answers> response) {
+                                                            api_Answers post = response.body();
+                                                            Toast.makeText(CreateQuizActivity.this, post.getResult(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                        @Override
+                                                        public void onFailure(@NonNull Call<api_Answers> call, @NonNull Throwable t) {
+                                                            Log.d("RES", "ERROR");
+                                                            t.printStackTrace();
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(@NonNull Call<api_Questions> call, @NonNull Throwable t) {
+                                        Log.d("RES", "ERROR");
+                                        t.printStackTrace();
+                                    }
+                                });
                     } else Toast.makeText(context, "Нет вариантов ответов на голосование!", Toast.LENGTH_SHORT).show();
                 } else Toast.makeText(context, "Пустое поле (Название голосования)", Toast.LENGTH_SHORT).show();
             }
