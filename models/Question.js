@@ -21,6 +21,11 @@ const Question = db.define('questions', {
   expired_at: {
     type: Sequelize.TIME(),
     allowNull: false
+  },
+
+  verified: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 
 });

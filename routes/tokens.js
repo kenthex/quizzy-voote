@@ -5,7 +5,7 @@ const Token = require('../models/Token');
 const bodyParser = require('body-parser');
 
 router.get('/', (req, res) => {
-  res.send("INDEX TOKEN");
+  res.send("INDEX TOKENS");
 });
 
 router.get('/:token', (req, res) => {
