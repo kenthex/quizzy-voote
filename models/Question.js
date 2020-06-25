@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 const Vote = require('../models/Vote');
 const Answer = require('../models/Answer');
+const User = require('../models/Answer');
 
 const Question = db.define('questions', {
   id: {
@@ -9,6 +10,11 @@ const Question = db.define('questions', {
     primaryKey: true,
     autoIncrement: true,
     unique: true,
+    allowNull: false
+  },
+
+  creator: {
+    type: Sequelize.INTEGER(),
     allowNull: false
   },
 

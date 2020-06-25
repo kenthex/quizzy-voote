@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
+  console.log(req.body);
   Questions.create(req.body).
     then(question =>
       res.send(/*{ id: question.dataValues.id }*/ question.dataValues)).

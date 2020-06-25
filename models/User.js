@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 const Token = require('../models/Token');
 const Vote = require('../models/Vote');
+const Question = require('../models/Question');
 
 const User = db.define('users', {
   id: {
@@ -51,5 +52,8 @@ Token.belongsTo(User, { foreignKey: 'user_id' });
 // Relation to votes (1-1)
 User.hasOne(Vote, { foreignKey: 'user_id' });
 Vote.belongsTo(User, { foreignKey: 'user_id' });
+// Relation to questions (1-M)
+User.hasMany(Question, { foreignKey: 'creator' });
+Question.belongsTo(User, { foreignKey: 'creator' });
 
 module.exports = User;
