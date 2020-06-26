@@ -19,6 +19,9 @@ public interface api_JSONPlaceHolder {
     @GET("/users/name/{name}")
     public Call<api_Users> getUserByName(@Path("name") String name);
 
+    @GET("/users/id/{id}")
+    public Call<api_Users> getUserByID(@Path("id") Integer id);
+
     @POST("/users/add")
     public Call<api_Users> createUser(@Body api_Users data);
 
@@ -36,6 +39,9 @@ public interface api_JSONPlaceHolder {
     /// QUESTIONS
     @POST("/questions/add")
     public Call<api_Questions> createQuestion(@Body api_Questions data);
+
+    @GET("/questions")
+    public Call<api_Questions> getQuestions();
 
     /// ANSWERS
     @POST("/answers/add")

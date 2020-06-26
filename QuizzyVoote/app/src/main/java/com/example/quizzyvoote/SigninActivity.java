@@ -83,6 +83,7 @@ public class SigninActivity extends AppCompatActivity {
                                                                 api_Tokens post = response.body();
 
                                                                 Storage.init(SigninActivity.this);
+                                                                Storage.addProperty("USER_ID", post.getUserID().toString());
                                                                 Storage.addProperty("TOKEN", post.getToken());
 
                                                                 Intent intent = new Intent(SigninActivity.this, MainActionActivity.class);

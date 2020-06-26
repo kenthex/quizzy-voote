@@ -36,7 +36,7 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
 
     public class ListViewHolder extends RecyclerView.ViewHolder {
 
-        TextView quiz_id, quiz_creator, quiz_name;
+        TextView quiz_id, quiz_creator, quiz_name, quiz_expireDate;
         CardView card_quiz;
 
         public ListViewHolder(@NonNull View itemView) {
@@ -45,6 +45,7 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
             quiz_id = itemView.findViewById(R.id.tv_quiz_id);
             quiz_creator = itemView.findViewById(R.id.tv_quiz_creator_name);
             quiz_name = itemView.findViewById(R.id.tv_label_name);
+            quiz_expireDate = itemView.findViewById(R.id.tv_date);
         }
     }
 
@@ -59,6 +60,8 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
         holder.quiz_id.setText(currentQuiz.getQuizID().toString());
         holder.quiz_creator.setText(currentQuiz.getQuizCreator());
         holder.quiz_name.setText(currentQuiz.getQuizName());
+        holder.quiz_expireDate.setText(currentQuiz.getExpireDate().toString());
+
 
         holder.card_quiz.setOnClickListener(new View.OnClickListener() {
             @Override

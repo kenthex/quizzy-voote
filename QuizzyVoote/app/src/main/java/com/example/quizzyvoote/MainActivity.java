@@ -105,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
                                                 Storage.init(MainActivity.this);
                                                 Storage.addProperty("TOKEN", post.getToken());
                                                 Storage.addProperty("USER_ID", post.getUserID().toString());
-                                                Toast.makeText(MainActivity.this, "TOKEN OK: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(MainActivity.this, "TOKEN OK: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(MainActivity.this, "ID: " + Storage.getProperty("USER_ID"), Toast.LENGTH_SHORT).show();
                                                  Intent intent = new Intent(MainActivity.this, MainActionActivity.class);
                                                  startActivity(intent);
                                             }

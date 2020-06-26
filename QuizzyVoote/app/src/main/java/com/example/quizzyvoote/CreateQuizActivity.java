@@ -116,7 +116,8 @@ public class CreateQuizActivity extends AppCompatActivity {
                 if(quizNameLength != 0) {
                     if(answersCount != 0) {
                         /// Сохранение вопроса в бд
-                        final api_Questions question = new api_Questions(quizName.getText().toString(), 0, 0);
+                        Toast.makeText(CreateQuizActivity.this, Storage.getProperty("USER_ID"), Toast.LENGTH_SHORT).show();
+                        final api_Questions question = new api_Questions(Storage.getProperty("USER_ID"), quizName.getText().toString(), 0, 0);
                         api_NetworkService.getInstance()
                                 .getJSONApi()
                                 .createQuestion(question)
@@ -140,7 +141,9 @@ public class CreateQuizActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onResponse(@NonNull Call<api_Answers> call, @NonNull Response<api_Answers> response) {
                                                             api_Answers post = response.body();
-                                                            Toast.makeText(CreateQuizActivity.this, post.getResult(), Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(CreateQuizActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(CreateQuizActivity.this, MainActionActivity.class);
+                                                            startActivity(intent);
                                                         }
                                                         @Override
                                                         public void onFailure(@NonNull Call<api_Answers> call, @NonNull Throwable t) {

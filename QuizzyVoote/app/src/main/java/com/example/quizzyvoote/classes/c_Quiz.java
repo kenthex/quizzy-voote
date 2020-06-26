@@ -1,5 +1,7 @@
 package com.example.quizzyvoote.classes;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class c_Quiz {
@@ -7,6 +9,7 @@ public class c_Quiz {
     private Integer quiz_ID;
     private String quiz_name;
     private String quiz_creator;
+    private String expireDate;
 
     public void setQuizName(String quiz_name) {
         this.quiz_name = quiz_name;
@@ -32,9 +35,17 @@ public class c_Quiz {
         return this.quiz_creator;
     }
 
-    public c_Quiz(Integer id, String name, String creator) {
+    public String getExpireDate() {
+        return this.expireDate;
+    }
+
+    public c_Quiz(Integer id, String name, String creator, long expireDate) {
         this.quiz_ID = id;
         this.quiz_name = name;
         this.quiz_creator = creator;
+        Date date = new Date(expireDate);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = sdf.format(date);
+        this.expireDate = formattedDate;
     }
 }
