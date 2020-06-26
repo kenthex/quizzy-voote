@@ -7,6 +7,16 @@ router.get('/', (req, res) => {
   res.send("INDEX ANSWERS");
 });
 
+router.get('/:question_id', (req, res) => {
+  Answers.findAll({where: { question_id: req.params.question_id }}).then(answers => {
+    answers.forEach(answer => {
+      answer.dataValues.createdAt = answer.dataValues.title;
+      delete answer.dataValues['title'];
+    });
+    res.send({ answers: answers });
+  });
+});
+
 router.post('/add', (req, res) => {
   console.log(req.body.title.length);
 

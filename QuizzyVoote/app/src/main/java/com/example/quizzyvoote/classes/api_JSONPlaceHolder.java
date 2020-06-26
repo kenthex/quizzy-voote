@@ -47,5 +47,11 @@ public interface api_JSONPlaceHolder {
     @POST("/answers/add")
     public Call<api_Answers> createAnswers(@Body api_Answers data);
 
+    @GET("/answers/{question_id}")
+    public Call<api_Answers> getAnswersForQuestion(@Path("question_id") String id);
+
+    /// VOTES
+    @POST("/votes/add")
+    public Call<api_Votes> createVote(@Body api_Votes data);
 }
 

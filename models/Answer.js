@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
+const Vote = require('../models/Vote');
 
 const Answer = db.define('answers', {
   id: {

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
+const Answer = require('../models/Answer');
 
 const Vote = db.define('votes', {
   id: {
@@ -26,7 +27,6 @@ const Vote = db.define('votes', {
     unique: true,
     allowNull: false
   }
-
 });
 
 module.exports = Vote;

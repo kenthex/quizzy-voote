@@ -32,7 +32,7 @@ public class api_Questions {
     @Expose
     private String error;
 
-    @SerializedName("result")
+    @SerializedName("questions")
     @Expose
     private List<api_Questions> questions;
 
@@ -50,8 +50,6 @@ public class api_Questions {
         this.expired_at = expired_at;
         this.verified = verified;
     }
-
-
 
     public String getID() { return this.id; };
 

@@ -65,12 +65,13 @@ public class SignupActivity extends AppCompatActivity {
                                     public void onResponse(@NonNull Call<api_Users> call, @NonNull Response<api_Users> response) {
                                         api_Users post = response.body();
 
-                                        Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
-                                        intent.putExtra(SigninActivity.LOGIN, post.getUser_login().toString());
-                                        startActivity(intent);
 
-                                        if(post.getUser_password() != null) {
-                                            String res = response.body().toString();
+
+                                        if(post.getError() == null) {
+                                            Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
+                                            if(post.getUser_login() != null)
+                                                intent.putExtra(SigninActivity.LOGIN, post.getUser_login());
+                                            startActivity(intent);
                                         } else {
                                             String errorMes = post.getError();
                                             switch(errorMes) {

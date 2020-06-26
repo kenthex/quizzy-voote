@@ -37,7 +37,7 @@ public class c_Question_Adapter extends RecyclerView.Adapter<c_Question_Adapter.
         return viewHolder;
     }
 
-    public class QuestionViewHolder extends RecyclerView.ViewHolder {
+    public static class QuestionViewHolder extends RecyclerView.ViewHolder {
 
         TextView question;
         Button del_question;

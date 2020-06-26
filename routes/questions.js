@@ -6,7 +6,6 @@ const Users = require('../models/User');
 
 
 router.get('/', (req, res) => {
-
   Questions.findAll({include: [
       {
         model: Users,
@@ -25,7 +24,7 @@ router.get('/', (req, res) => {
         question.dataValues.expired_at = date;
         question.dataValues.creator = question.dataValues.user_data.dataValues.login;
       });
-      res.send({result: questions});
+      res.send({questions: questions});
     }).
     catch(err => console.log(err));
 });

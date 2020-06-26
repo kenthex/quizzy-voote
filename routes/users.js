@@ -27,7 +27,11 @@ router.post('/add', (req, res) => {
   if(req.body.password == req.body.repass) {
     User.create(req.body).
     then( () => res.send( req.body )).
-    catch((err) => res.send({error: err.errors[0].message}));
+    catch((err) => {
+      console.log({ error: err.errors[0].message });
+      res.send({ error: err.errors[0].message })
+
+    });
   } else res.send({ error: "repass failed" });
 });
 

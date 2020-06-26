@@ -30,4 +30,4 @@ app.use('/answers', require('./routes/answers'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, console.log(`SERVER STARTED ON PORT ${PORT}`));
-db.sync();
+db.sync({force: true});

@@ -20,13 +20,21 @@ public class api_Answers {
     @Expose
     private ArrayList<String> title;
 
-    @SerializedName("result")
+    @SerializedName("answers")
     @Expose
-    private String result;
+    private List<api_Answers> answers;
+
+    @SerializedName("createdAt")
+    @Expose
+    private String answer;
 
     public api_Answers(int question_id, ArrayList<String> title) {
         this.question_id = question_id;
         this.title = title;
+    }
+
+    public api_Answers(String answer) {
+        this.answer = answer;
     }
 
     public int getID() { return this.id; }
@@ -35,6 +43,8 @@ public class api_Answers {
 
     public ArrayList<String> getTitles() { return this.title; }
 
-    public String getResult() { return this.result; }
+    public List<api_Answers> getAnswers() { return this.answers; }
+
+    public String getAnswer() { return this.answer; }
 
 }
