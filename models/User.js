@@ -53,7 +53,7 @@ Token.belongsTo(User, { foreignKey: 'user_id' });
 User.hasOne(Vote, { foreignKey: 'user_id' });
 Vote.belongsTo(User, { foreignKey: 'user_id' });
 // Relation to questions (1-M)
-User.hasMany(Question, { foreignKey: 'creator' });
-Question.belongsTo(User, { foreignKey: 'creator' });
+User.hasMany(Question, { as: 'question', foreignKey: 'creator' });
+Question.belongsTo(User, { as: 'user_data', foreignKey: 'creator' });
 
 module.exports = User;

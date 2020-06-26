@@ -38,7 +38,7 @@ router.post('/login', (req, res) => {
   req.body.expired_at = date;
   req.body.token = token;
   Token.create(req.body);
-  res.send({ token: token });
+  res.send(req.body);
 });
 
 module.exports = router;
