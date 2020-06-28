@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.quizzyvoote.classes.Storage;
 import com.example.quizzyvoote.classes.api_NetworkService;
 import com.example.quizzyvoote.classes.api_Tokens;
+import com.example.quizzyvoote.classes.api_Users;
 
 import java.util.Date;
 
@@ -105,8 +106,26 @@ public class MainActivity extends AppCompatActivity {
                                                 Storage.init(MainActivity.this);
                                                 Storage.addProperty("TOKEN", post.getToken());
                                                 Storage.addProperty("USER_ID", post.getUserID().toString());
+
+
+                                                api_NetworkService.getInstance()
+                                                        .getJSONApi()
+                                                        .getUserByID(post.getUserID())
+                                                        .enqueue(new Callback<api_Users>() {
+                                                            @Override
+                                                            public void onResponse(@NonNull Call<api_Users> call, @NonNull Response<api_Users> response) {
+                                                                api_Users post = response.body();
+                                                                Storage.addProperty("USERNAME", post.getUser_login());
+                                                            }
+                                                            @Override
+                                                            public void onFailure(@NonNull Call<api_Users> call, @NonNull Throwable t) {
+                                                                Log.d("RES", "ERROR_1");
+                                                                t.printStackTrace();
+                                                            }
+                                                        });
+
                                                 //Toast.makeText(MainActivity.this, "TOKEN OK: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
-                                                Toast.makeText(MainActivity.this, "ID: " + Storage.getProperty("USER_ID"), Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(MainActivity.this, "ID: " + Storage.getProperty("USER_ID"), Toast.LENGTH_SHORT).show();
                                                  Intent intent = new Intent(MainActivity.this, MainActionActivity.class);
                                                  startActivity(intent);
                                             }
@@ -119,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
                             } else {
                                 /// ВРЕМЯ ТОКЕНА ВЫШЛО, УДАЛЯЕМ
-                                Toast.makeText(MainActivity.this, "TOKEN EXPIRED: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(MainActivity.this, "TOKEN EXPIRED: " + Storage.getProperty("TOKEN"), Toast.LENGTH_SHORT).show();
                                 api_NetworkService.getInstance()
                                         .getJSONApi()
                                         .delToken(post.getToken())
@@ -143,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                             t.printStackTrace();
                         }
                     });
-        } else { Toast.makeText(MainActivity.this, "NO TOKEN", Toast.LENGTH_SHORT).show(); }
+        } else { /*Toast.makeText(MainActivity.this, "NO TOKEN", Toast.LENGTH_SHORT).show();*/ }
 
     }
 }

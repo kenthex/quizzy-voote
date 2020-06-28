@@ -18,15 +18,17 @@ const Vote = db.define('votes', {
 
   user_id: {
     type: Sequelize.INTEGER(),
-    unique: true,
+    //unique: true,
     allowNull: false
   },
 
   question_id: {
     type: Sequelize.INTEGER(),
-    unique: true,
+    //unique: true,
     allowNull: false
   }
 });
+
+Vote.belongsTo(Answer, { as: 'answer_data', foreignKey: 'answer_id' });
 
 module.exports = Vote;

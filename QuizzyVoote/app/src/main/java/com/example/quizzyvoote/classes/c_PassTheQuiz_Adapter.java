@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class c_PassTheQuiz_Adapter extends RecyclerView.Adapter<c_PassTheQuiz_Ad
     private LayoutInflater inflater;
     private List<api_Answers> answers;
     private int lastSelectedPosition = -1;
+
 
     public c_PassTheQuiz_Adapter(Context context, List<api_Answers> answers) {
         this.answers = answers;
@@ -66,13 +68,13 @@ public class c_PassTheQuiz_Adapter extends RecyclerView.Adapter<c_PassTheQuiz_Ad
         RadioGroup radioGroup;
         CardView cardview;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.rb_select_answer);
             cardview = itemView.findViewById(R.id.card_answer);
             radioGroup = itemView.findViewById(R.id.radioGrouppen);
             lastTitle = itemView.findViewById(R.id.rb_select_answer);
+
 
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,25 +84,12 @@ public class c_PassTheQuiz_Adapter extends RecyclerView.Adapter<c_PassTheQuiz_Ad
                     answers.remove(( answers.size() -1 ));
                     notifyDataSetChanged();
 
+                    Storage.addProperty("CURRENT_ANSWER", answers.get(lastSelectedPosition).getAnswer());
+
                     Context context = v.getContext();
-                    Toast.makeText(context, Storage.getProperty("CURRENT_QUESTION_ID"), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, Storage.getProperty("CURRENT_QUESTION_ID"), Toast.LENGTH_SHORT).show();
 
 
-                    api_Votes vote = new api_Votes(Integer.parseInt(Storage.getProperty("USER_ID")), Integer.parseInt(Storage.getProperty("CURRENT_QUESTION_ID")), answers.get(lastSelectedPosition).getAnswer());
-                    api_NetworkService.getInstance()
-                            .getJSONApi()
-                            .createVote(vote)
-                            .enqueue(new Callback<api_Votes>() {
-                                @Override
-                                public void onResponse(@NonNull Call<api_Votes> call, @NonNull Response<api_Votes> response) {
-                                    api_Votes votes = response.body();
-                                }
-                                @Override
-                                public void onFailure(@NonNull Call<api_Votes> call, @NonNull Throwable t) {
-                                    Log.d("RES", "ERROR");
-                                    t.printStackTrace();
-                                }
-                            });
 
                 }
             });

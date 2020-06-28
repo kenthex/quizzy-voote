@@ -3,36 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/style_button_main_action">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_questions"
-        android:layout_width="400dp"
+        android:layout_width="410dp"
         android:layout_height="320dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/actionBarDivider"
         android:descendantFocusability="blocksDescendants"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:focusedByDefault="false"
         android:padding="5dp"
-        android:paddingRight="7dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.737"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_text_answer" />
+        app:layout_constraintTop_toBottomOf="@+id/variants" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Введите название голосования:"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.217"
+        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +46,7 @@
 
     <EditText
         android:id="@+id/et_quiz_name"
-        android:layout_width="350dp"
+        android:layout_width="180pt"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/style_input_middle"
@@ -59,20 +56,22 @@
         android:maxLength="30"
         android:padding="7dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/et_text_answer"
-        android:layout_width="350dp"
+        android:layout_width="180pt"
         android:layout_height="40dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/style_input_middle"
         android:ems="10"
         android:hint="Вариант ответа"
         android:inputType="textPersonName"
         android:padding="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="@+id/et_quiz_name"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -82,7 +81,8 @@
         android:layout_height="40dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="@android:color/holo_green_light"
-        android:text="Add"
+        android:text="+"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/et_text_answer"
         app:layout_constraintEnd_toEndOf="@+id/et_text_answer"
         app:layout_constraintTop_toTopOf="@+id/et_text_answer"
@@ -90,24 +90,36 @@
 
     <Button
         android:id="@+id/btn_delete_all_answers"
-        android:layout_width="350dp"
-        android:layout_height="40dp"
+        android:layout_width="88pt"
+        android:layout_height="25pt"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@android:color/holo_red_light"
         android:text="Сбросить"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="@+id/rv_questions"
-        app:layout_constraintStart_toStartOf="@+id/rv_questions"
-        app:layout_constraintTop_toBottomOf="@+id/btn_save_quiz" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_text_answer" />
 
     <Button
         android:id="@+id/btn_save_quiz"
-        android:layout_width="350dp"
-        android:layout_height="40dp"
+        android:layout_width="88pt"
+        android:layout_height="25pt"
         android:backgroundTint="@android:color/holo_orange_light"
         android:text="Сохранить"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="@+id/rv_questions"
-        app:layout_constraintStart_toStartOf="@+id/rv_questions"
-        app:layout_constraintTop_toBottomOf="@+id/rv_questions" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_delete_all_answers" />
+
+    <TextView
+        android:id="@+id/variants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="Варианты:"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/btn_delete_all_answers"
+        app:layout_constraintTop_toBottomOf="@+id/btn_delete_all_answers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

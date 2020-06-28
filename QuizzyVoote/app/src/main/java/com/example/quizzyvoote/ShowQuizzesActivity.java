@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.quizzyvoote.classes.Storage;
 import com.example.quizzyvoote.classes.api_Answers;
 import com.example.quizzyvoote.classes.api_NetworkService;
 import com.example.quizzyvoote.classes.api_Questions;
@@ -61,14 +62,14 @@ public class ShowQuizzesActivity extends AppCompatActivity {
                         t.printStackTrace();
                     }
                 });
-
-        button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        Storage.addProperty("TITLE", "");
+//        button = findViewById(R.id.button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
     }
 }

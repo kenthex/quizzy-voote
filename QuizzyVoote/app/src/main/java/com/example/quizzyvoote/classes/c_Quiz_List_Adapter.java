@@ -74,7 +74,7 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
 
         holder.card_quiz.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 final Context context = v.getContext();
                 api_NetworkService.getInstance()
                         .getJSONApi()
@@ -91,11 +91,34 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
                                     answers.add(answer.getAnswer());
                                     anuswers += "~~" + answer.getAnswer();
                                 }
-                                Intent intent = new Intent(context, PassTheQuizActivity.class);
+                                final Intent intent = new Intent(context, PassTheQuizActivity.class);
                                 intent.putExtra(PassTheQuizActivity.ID, currentQuiz.getQuizID().toString());
                                 intent.putExtra(PassTheQuizActivity.CREATOR, currentQuiz.getQuizCreator());
                                 intent.putExtra(PassTheQuizActivity.NAME, currentQuiz.getQuizName());
                                 intent.putExtra(PassTheQuizActivity.ANSWER, anuswers);
+
+                                api_NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .checkVote(Integer.parseInt(Storage.getProperty("USER_ID")), currentQuiz.getQuizID())
+                                        .enqueue(new Callback<api_Votes>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<api_Votes> call, @NonNull Response<api_Votes> response) {
+                                                api_Votes post = response.body();
+                                                if(post.getStatus().equals("voted")) {
+                                                    Storage.addProperty("VOTED", "TRUE");
+                                                    Storage.addProperty("TITLE", post.getTitle());
+                                                } else { Storage.addProperty("VOTED", "FALSE"); Storage.addProperty("TITLE", ""); }
+                                            }
+                                            @Override
+                                            public void onFailure(@NonNull Call<api_Votes> call, @NonNull Throwable t) {
+                                                Log.d("RES", "ERROR");
+                                                t.printStackTrace();
+                                            }
+                                        });
+
+
+
+                                context.startActivity(intent);
                                 context.startActivity(intent);
                             }
                             @Override

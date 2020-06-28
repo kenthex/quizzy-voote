@@ -23,4 +23,5 @@ const Answer = db.define('answers', {
 
 });
 
+
 module.exports = Answer;

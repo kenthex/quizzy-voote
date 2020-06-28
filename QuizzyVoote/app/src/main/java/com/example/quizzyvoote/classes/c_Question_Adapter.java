@@ -61,7 +61,7 @@ public class c_Question_Adapter extends RecyclerView.Adapter<c_Question_Adapter.
             public void onClick(View v) {
                 Context context = v.getContext();
                 String itemLabel = mQuestions.get(position);
-                Toast.makeText(context, itemLabel, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, itemLabel, Toast.LENGTH_SHORT).show();
             }
         });
 

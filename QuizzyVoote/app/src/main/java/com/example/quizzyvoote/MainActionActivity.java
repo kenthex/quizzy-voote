@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -14,6 +15,8 @@ import com.example.quizzyvoote.classes.Storage;
 import com.example.quizzyvoote.classes.api_NetworkService;
 import com.example.quizzyvoote.classes.api_Tokens;
 
+import org.w3c.dom.Text;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,6 +24,7 @@ import retrofit2.Response;
 public class MainActionActivity extends AppCompatActivity {
 
     Button btn_create_quiz, btn_pass_quiz, btn_exit;
+    TextView username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,9 @@ public class MainActionActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Главное меню");
 
+
+        username = (TextView) findViewById(R.id.tv_username);
+        username.setText(Storage.getProperty("USERNAME"));
 
         btn_create_quiz = (Button) findViewById(R.id.btn_create_quiz);
         btn_create_quiz.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +71,7 @@ public class MainActionActivity extends AppCompatActivity {
                                 api_Tokens post = response.body();
                                 Storage.addProperty("USER_ID", "");
                                 Storage.addProperty("TOKEN", "");
+
                                 Intent intent = new Intent(MainActionActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }

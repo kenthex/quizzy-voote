@@ -42,6 +42,4 @@ Vote.belongsTo(Question, { foreignKey: 'question_id' });
 Question.hasMany(Answer, { foreignKey: 'question_id' });
 Answer.belongsTo(Question, { foreignKey: 'question_id' });
 
-
-
 module.exports = Question;

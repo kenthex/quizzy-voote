@@ -65,8 +65,6 @@ public class SignupActivity extends AppCompatActivity {
                                     public void onResponse(@NonNull Call<api_Users> call, @NonNull Response<api_Users> response) {
                                         api_Users post = response.body();
 
-
-
                                         if(post.getError() == null) {
                                             Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
                                             if(post.getUser_login() != null)

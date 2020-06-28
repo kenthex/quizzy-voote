@@ -53,5 +53,8 @@ public interface api_JSONPlaceHolder {
     /// VOTES
     @POST("/votes/add")
     public Call<api_Votes> createVote(@Body api_Votes data);
+
+    @GET("/votes/check/{user_id}/{question_id}")
+    public Call<api_Votes> checkVote(@Path("user_id") Integer id, @Path("question_id") Integer question_id);
 }
 
