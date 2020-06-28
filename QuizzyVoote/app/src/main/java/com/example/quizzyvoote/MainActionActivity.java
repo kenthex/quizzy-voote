@@ -36,7 +36,6 @@ public class MainActionActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Главное меню");
 
-
         username = (TextView) findViewById(R.id.tv_username);
         username.setText(Storage.getProperty("USERNAME"));
 
@@ -85,4 +84,7 @@ public class MainActionActivity extends AppCompatActivity {
         });
     }
 
+    private void resetValues() {
+
+    }
 }

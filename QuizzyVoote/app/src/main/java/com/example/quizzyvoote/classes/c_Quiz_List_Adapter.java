@@ -2,6 +2,7 @@ package com.example.quizzyvoote.classes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +20,10 @@ import com.example.quizzyvoote.PassTheQuizActivity;
 import com.example.quizzyvoote.R;
 import com.example.quizzyvoote.ShowQuizzesActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -64,7 +68,7 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ListViewHolder holder, final int position) {
         final c_Quiz currentQuiz = quiz_list.get(position);
 
         holder.quiz_id.setText(currentQuiz.getQuizID().toString());
@@ -72,10 +76,31 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
         holder.quiz_name.setText(currentQuiz.getQuizName());
         holder.quiz_expireDate.setText(currentQuiz.getExpireDate().toString());
 
+        long currentDate, expireDate;
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        Date expired = null;
+        Date current = null;
+        try {
+            expired = format.parse(currentQuiz.getExpireDate());
+            current = new Date();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        expireDate = expired.getTime();
+        currentDate = current.getTime();
+
+        if(currentDate > expireDate) {
+            holder.quiz_expireDate.setTextColor(Color.parseColor("#FF4444"));
+        } else holder.quiz_expireDate.setTextColor(Color.parseColor("#99CC00"));
+
         holder.card_quiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+
                 final Context context = v.getContext();
+                if(holder.quiz_expireDate.getCurrentTextColor() != Color.parseColor("#FF4444")) {
+
                 api_NetworkService.getInstance()
                         .getJSONApi()
                         .getAnswersForQuestion(currentQuiz.getQuizID().toString())
@@ -104,6 +129,7 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
                                             @Override
                                             public void onResponse(@NonNull Call<api_Votes> call, @NonNull Response<api_Votes> response) {
                                                 api_Votes post = response.body();
+                                                //Storage.addProperty("CURRENT_ANSWER", "");
                                                 if(post.getStatus().equals("voted")) {
                                                     Storage.addProperty("VOTED", "TRUE");
                                                     Storage.addProperty("TITLE", post.getTitle());
@@ -116,9 +142,11 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
                                             }
                                         });
 
-
-
-                                context.startActivity(intent);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 context.startActivity(intent);
                             }
                             @Override
@@ -127,6 +155,7 @@ public class c_Quiz_List_Adapter extends RecyclerView.Adapter<c_Quiz_List_Adapte
                                 t.printStackTrace();
                             }
                         });
+                } else Toast.makeText(v.getContext(), "Голосование завершено", Toast.LENGTH_SHORT).show();
             }
         });
     }

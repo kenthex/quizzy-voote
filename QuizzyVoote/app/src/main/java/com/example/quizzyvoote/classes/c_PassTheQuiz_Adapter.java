@@ -2,6 +2,7 @@ package com.example.quizzyvoote.classes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizzyvoote.PassTheQuizActivity;
@@ -50,6 +52,10 @@ public class c_PassTheQuiz_Adapter extends RecyclerView.Adapter<c_PassTheQuiz_Ad
         final api_Answers answers = this.answers.get(position);
         holder.title.setText(answers.getAnswer());
         holder.title.setChecked(lastSelectedPosition == position);
+
+        if(holder.title.isChecked())
+            holder.title.setBackgroundColor(Color.parseColor("#FFBB33"));
+        else holder.title.setBackgroundColor(Color.parseColor("#E0E0E0"));
     }
 
     @Override
@@ -84,8 +90,9 @@ public class c_PassTheQuiz_Adapter extends RecyclerView.Adapter<c_PassTheQuiz_Ad
                     answers.remove(( answers.size() -1 ));
                     notifyDataSetChanged();
 
-                    Storage.addProperty("CURRENT_ANSWER", answers.get(lastSelectedPosition).getAnswer());
 
+
+                    Storage.addProperty("CURRENT_ANSWER", answers.get(lastSelectedPosition).getAnswer());
                     Context context = v.getContext();
                     //Toast.makeText(context, Storage.getProperty("CURRENT_QUESTION_ID"), Toast.LENGTH_SHORT).show();
 

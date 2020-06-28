@@ -85,6 +85,7 @@ public class SigninActivity extends AppCompatActivity {
                                                                 Storage.init(SigninActivity.this);
                                                                 Storage.addProperty("USER_ID", post.getUserID().toString());
                                                                 Storage.addProperty("TOKEN", post.getToken());
+                                                                Storage.addProperty("USERNAME", userName.getText().toString());
 
                                                                 Intent intent = new Intent(SigninActivity.this, MainActionActivity.class);
                                                                 startActivity(intent);
@@ -98,7 +99,7 @@ public class SigninActivity extends AppCompatActivity {
                                                                 t.printStackTrace();
                                                             }
                                                         });
-                                            } else { userPassword.setError("Неверный пароль"); userPassword.requestFocus(); Toast.makeText(SigninActivity.this, "Введенный пароль: " + inputPass + "\nПароль с базы: " + post.getUser_password(), Toast.LENGTH_SHORT).show();}
+                                            } else { userPassword.setError("Неверный пароль"); userPassword.requestFocus(); /*Toast.makeText(SigninActivity.this, "Введенный пароль: " + inputPass + "\nПароль с базы: " + post.getUser_password(), Toast.LENGTH_SHORT).show(); */ }
                                         } else { userName.setError("Пользователь не найден"); userName.requestFocus(); }
 
                                     }

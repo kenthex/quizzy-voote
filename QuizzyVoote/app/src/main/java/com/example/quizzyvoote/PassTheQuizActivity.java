@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,8 @@ import com.example.quizzyvoote.classes.c_Answers;
 import com.example.quizzyvoote.classes.c_PassTheQuiz_Adapter;
 import com.example.quizzyvoote.classes.c_Quiz;
 import com.example.quizzyvoote.classes.c_Quiz_List_Adapter;
+import com.google.android.material.snackbar.Snackbar;
+//import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +56,10 @@ public class PassTheQuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_the_quiz);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         id = findViewById(R.id.tv_quiz_id);
         creator = findViewById(R.id.tv_quiz_creator);
         answer = findViewById(R.id.tv_quiz_answer);
@@ -63,6 +70,8 @@ public class PassTheQuizActivity extends AppCompatActivity {
         creator.setText(getIntent().getStringExtra("CREATOR"));
         name.setText(getIntent().getStringExtra("NAME"));
 
+        actionBar.setTitle(name.getText());
+
         if(!Storage.getProperty("TITLE").equals("")) {
             answer.setText(Storage.getProperty("TITLE"));
         } else {
@@ -71,6 +80,7 @@ public class PassTheQuizActivity extends AppCompatActivity {
         }
 
         Storage.addProperty("CURRENT_QUESTION_ID", getIntent().getStringExtra("ID"));
+        Storage.addProperty("CURRENT_ANSWER", "");
         String answersText = getIntent().getStringExtra("ANSWER");
 
         for (String retval : answersText.split("~~", 0)) {
@@ -92,12 +102,10 @@ public class PassTheQuizActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.GONE);
         }
 
-
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //if(!Storage.getProperty("CURRENT_ANSWER").equals(null)) {
-
+            public void onClick(final View v) {
+                if (!Storage.getProperty("CURRENT_ANSWER").equals("")) {
 
                     api_Votes vote = new api_Votes(Integer.parseInt(Storage.getProperty("USER_ID")), Integer.parseInt(Storage.getProperty("CURRENT_QUESTION_ID")), Storage.getProperty("CURRENT_ANSWER"));
                     api_NetworkService.getInstance()
@@ -107,7 +115,9 @@ public class PassTheQuizActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(@NonNull Call<api_Votes> call, @NonNull Response<api_Votes> response) {
                                     api_Votes votes = response.body();
-                                    Toast.makeText(PassTheQuizActivity.this, "SEND: " + Storage.getProperty("CURRENT_ANSWER"), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(PassTheQuizActivity.this, "SEND: " + Storage.getProperty("CURRENT_ANSWER"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PassTheQuizActivity.this, "Успешно!", Toast.LENGTH_SHORT).show();
+                                    //Snackbar.make(v, "Успешно!", Snackbar.LENGTH_SHORT).show();
                                     Intent intent = new Intent(PassTheQuizActivity.this, MainActionActivity.class);
                                     startActivity(intent);
                                 }
@@ -118,8 +128,10 @@ public class PassTheQuizActivity extends AppCompatActivity {
                                     t.printStackTrace();
                                 }
                             });
-            }
+                } else Snackbar.make(v, "Ничего не выбрано", Snackbar.LENGTH_LONG).show();
 
+
+            }
         });
 
     }
