@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
         question.dataValues.expired_at = date;
         question.dataValues.creator = question.dataValues.user_data.dataValues.login;
       });
-      res.send({questions: questions});
+      res.send({ questions: questions });
     }).
     catch(err => console.log(err));
 });
