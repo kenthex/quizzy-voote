@@ -49,8 +49,11 @@ public class ShowQuizzesActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(@NonNull Call<api_Questions> call, @NonNull Response<api_Questions> response) {
                         questions = response.body().getQuestions();
-                        for(api_Questions question : questions)
-                            quizzes.add(new c_Quiz(Integer.parseInt(question.getID()), question.getTitle(), question.getCreator(), question.getExpiredAt()));
+                        for(api_Questions question : questions) {
+                            if(question.getVerified() == 1)
+                                quizzes.add(new c_Quiz(Integer.parseInt(question.getID()), question.getTitle(), question.getCreator(), question.getExpiredAt()));
+                        }
+
                         rv_quiz_list = findViewById(R.id.rv_quiz_list);
                         c_Quiz_List_Adapter quizAdapter = new c_Quiz_List_Adapter(quizzes);
                         rv_quiz_list.setAdapter(quizAdapter);

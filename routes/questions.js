@@ -33,9 +33,20 @@ router.post('/add', (req, res) => {
   console.log(req.body);
   Questions.create(req.body).
     then(question =>
-      res.send(/*{ id: question.dataValues.id }*/ question.dataValues)).
+      res.send(question.dataValues)).
     catch(err =>
       res.send({ error: err.errors[0].message }));
+});
+
+router.post('/setverified', (req, res) => {
+  
+  var date = new Date();
+  date.setDate(date.getDate() + 3);
+
+  Questions.update(
+   { verified: 1, expired_at: date },
+   { where: { id: req.body.id } }).
+    then(question => res.send(question));
 });
 
 module.exports = router;

@@ -90,14 +90,8 @@ public class c_PassTheQuiz_Adapter extends RecyclerView.Adapter<c_PassTheQuiz_Ad
                     answers.remove(( answers.size() -1 ));
                     notifyDataSetChanged();
 
-
-
                     Storage.addProperty("CURRENT_ANSWER", answers.get(lastSelectedPosition).getAnswer());
                     Context context = v.getContext();
-                    //Toast.makeText(context, Storage.getProperty("CURRENT_QUESTION_ID"), Toast.LENGTH_SHORT).show();
-
-
-
                 }
             });
 

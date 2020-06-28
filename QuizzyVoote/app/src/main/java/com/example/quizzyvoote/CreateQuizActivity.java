@@ -26,6 +26,7 @@ import com.example.quizzyvoote.classes.api_NetworkService;
 import com.example.quizzyvoote.classes.api_Tokens;
 import com.example.quizzyvoote.classes.api_Questions;
 import com.example.quizzyvoote.classes.c_Question_Adapter;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -83,13 +84,13 @@ public class CreateQuizActivity extends AppCompatActivity {
                             variants.setVisibility(View.VISIBLE);
                         }
 
-                } else Toast.makeText(CreateQuizActivity.this, "Пустое поле (Вариант ответа)", Toast.LENGTH_SHORT).show();
+                } else Snackbar.make(v, "Пустое поле (вариант ответа)", Snackbar.LENGTH_SHORT).show();
             }
         });
 
         deleteAllAnswers.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 final Context context = v.getContext();
                 if(questions.size() != 0) {
                     new AlertDialog.Builder(context)
@@ -103,12 +104,12 @@ public class CreateQuizActivity extends AppCompatActivity {
                                     questions.removeAll(questions);
                                     quizName.setText("");
                                     variants.setVisibility(View.GONE);
-                                    Toast.makeText(context, "Все удалено, ничего не оставлено ;(", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(v, "Успешно удалено!", Snackbar.LENGTH_SHORT).show();
                                 }
                             })
                             .setNegativeButton("Нет", null)
                             .show();
-                } else Toast.makeText(context, "Нечего удалять ;)", Toast.LENGTH_SHORT).show();
+                } else Snackbar.make(v, "Нечего удалять!", Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -165,8 +166,8 @@ public class CreateQuizActivity extends AppCompatActivity {
                                         t.printStackTrace();
                                     }
                                 });
-                    } else Toast.makeText(context, "Нет вариантов ответов на голосование!", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(context, "Пустое поле (Название голосования)", Toast.LENGTH_SHORT).show();
+                    } else Snackbar.make(v, "Нет вариантов ответов", Snackbar.LENGTH_SHORT).show();
+                } else Snackbar.make(v, "Пустое поле (название голосования)", Snackbar.LENGTH_SHORT).show();
             }
         });
 

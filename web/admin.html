@@ -19,28 +19,25 @@
                 <th scope="col">#</th>
                 <th scope="col">Название</th>
                 <th scope="col">Создатель</th>
-                <th scope="col"></th>
+                <th scope="col"> </th>
               </tr>
             </thead>
 
-            <tbody v-for="question in question_data">
+            <tbody v-for="question in question_data" :key="question.id">
               <tr >
                 <th scope="row"> {{ question.id }} </th>
                 <td> {{ question.title }} </td>
                 <td> {{ question.creator }} </td>
                 <td>
-                  <button class="btn btn-success" @click="test()">Одобрить</button>
+                  <button class="btn btn-success" @click="setVerified(question.id)">Одобрить</button>
                 </td>
               </tr>
             </tbody>
 
           </table>
-          <button class="btn btn-success" @click="getQuestions()">Отрисовать список</button>
+          <button class="btn btn-success" visibility="none" id="booton" @click="getQuestions()">Отрисовать список</button>
         </div>
-
-
       </div>
-
     </div>
   </body>
 
@@ -57,14 +54,37 @@ const vm = new Vue({
         data: {
             question_data: []
         },
+        created() {
+          document.getElementById("booton").style.visibility = "hidden";
+          this.getQuestions();
+        },
         methods: {
            getQuestions(){
+             this.question_data = [];
              this.getQuestionsQuery().then(res => {
-               this.question_data = res.data.questions;
+               var que = res.data.questions;
+               que.forEach(question => {
+                 if(question.verified == 0)
+                    this.question_data.push(question);
+               return this.question_data;
+               });
              });
           },
           getQuestionsQuery() {
             return axios.get('/questions/');
+          },
+          setVerified(id) {
+            axios.post('/questions/setverified', {
+                id: id
+            })
+            .then(function (response) {
+              document.getElementById("booton").click();
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
           }
         }
 });

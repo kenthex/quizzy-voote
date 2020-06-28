@@ -11,7 +11,6 @@ db.authenticate().
   then( () => console.log('Database connected') ).
   catch( err => console.log('Error: ' + err) );
 
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
