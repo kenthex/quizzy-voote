@@ -24,6 +24,7 @@
             </thead>
 
             <tbody v-for="question in question_data" :key="question.id">
+
               <tr >
                 <th scope="row"> {{ question.id }} </th>
                 <td> {{ question.title }} </td>
@@ -31,6 +32,13 @@
                 <td>
                   <button class="btn btn-success" @click="setVerified(question.id)">Одобрить</button>
                 </td>
+              </tr>
+
+            </tbody>
+
+            <tbody v-if="!question_data.length">
+              <tr >
+                <th scope="row"> <b> Список опросов пуст </b> </th>
               </tr>
             </tbody>
 
