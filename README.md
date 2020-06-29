@@ -1,4 +1,4 @@
 # quizzy-voote
 
 
-	https://quizzy-voote.herokuapp.com/
+[Административная панель приложения](https://quizzy-voote.herokuapp.com/)
